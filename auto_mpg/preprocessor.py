@@ -11,6 +11,8 @@ class Preprocessor:
             self.X = df.drop(columns=[target])
 
     def standardize(self):
+        if not hasattr(self, 'X'):
+            raise RuntimeError("Preprocessor deve essere inizializzato con un DataFrame: Preprocessor(df)")
         print("\n--- STANDARDIZZAZIONE (Z-Score) ---")
         X_scaled = self.scaler.fit_transform(self.X)
         self.X = pd.DataFrame(X_scaled, columns=self.X.columns)
@@ -27,6 +29,8 @@ class Preprocessor:
         return X_train_scaled, X_test_scaled
 
     def get_dataset(self):
+        if not hasattr(self, 'X'):
+            raise RuntimeError("Preprocessor deve essere inizializzato con un DataFrame: Preprocessor(df)")
         df = self.X.copy()
         df[self.target] = self.y.values
         return df

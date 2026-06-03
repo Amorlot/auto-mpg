@@ -7,6 +7,8 @@ select_bp = Blueprint('select', __name__)
 def select():
     data = request.get_json() or {}
     p = data.get("p", 0.75)
+    if not isinstance(p, (int, float)) or not (0 < p < 1):
+        return jsonify({"status": "error", "message": "p deve essere un numero tra 0 e 1 (esclusi)"}), 400
 
     loader = DataLoader()
     df = loader.load()

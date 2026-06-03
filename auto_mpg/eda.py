@@ -1,3 +1,4 @@
+import math
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -64,14 +65,14 @@ class Eda:
         if n_cols == 0:
             print("Nessuna variabile numerica trovata.")
             return
-        n_rows = int(n_cols ** 0.5)
-        n_rows = n_rows if n_rows * n_rows >= n_cols else n_rows + 1
-        fig, axes = plt.subplots(n_rows, n_rows, figsize=figsize)
+        n_cols_grid = math.ceil(math.sqrt(n_cols))
+        n_rows_grid = math.ceil(n_cols / n_cols_grid)
+        fig, axes = plt.subplots(n_rows_grid, n_cols_grid, figsize=figsize, squeeze=False)
         axes = axes.flatten()
         for i, col in enumerate(numeric_df.columns):
             axes[i].hist(numeric_df[col].dropna(), bins=bins, edgecolor='black')
             axes[i].set_title(col)
-        for j in range(i + 1, len(axes)):
+        for j in range(i + 1, n_rows_grid * n_cols_grid):
             fig.delaxes(axes[j])
         plt.tight_layout()
         plt.savefig(f'{self.output_dir}/histograms.png')

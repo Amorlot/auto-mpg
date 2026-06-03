@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify
 from auto_mpg import DataLoader, DataCleaner, FeatureSelector, Preprocessor
+from auto_mpg.split import Split
 
 standardize_bp = Blueprint('standardize', __name__)
 
@@ -15,11 +16,17 @@ def standardize():
     selector.apply_variance_threshold(p=0.75)
     df = selector.get_dataset()
 
-    preprocessor = Preprocessor(df, target='mpg')
-    X_scaled = preprocessor.standardize()
+    X = df.drop(columns=['mpg'])
+    y = df['mpg']
+
+    splitter = Split()
+    X_train, X_test, y_train, y_test = splitter.split(X, y)
+
+    preprocessor = Preprocessor()
+    X_train_scaled, X_test_scaled = preprocessor.scale(X_train, X_test)
 
     return jsonify({
         "status": "ok",
-        "shape": list(X_scaled.shape),
-        "sample": X_scaled.head(3).to_dict()
+        "shape_train": list(X_train_scaled.shape),
+        "shape_test": list(X_test_scaled.shape)
     })
