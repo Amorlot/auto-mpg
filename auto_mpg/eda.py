@@ -103,3 +103,22 @@ class Eda:
 
         plt.tight_layout()
         plt.show()
+
+
+
+
+    def find_outliers(self, colonna):
+        q1 = self.df[colonna].quantile(0.25)
+        q3 = self.df[colonna].quantile(0.75)
+
+        iqr = q3 - q1
+
+        lower_bound = q1 - 1.5 * iqr
+        upper_bound = q3 + 1.5 * iqr
+
+        outliers = df[
+            (df[colonna] < lower_bound) |
+            (df[colonna] > upper_bound)
+            ]
+
+        return outliers.index.tolist()
