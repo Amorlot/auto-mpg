@@ -24,3 +24,7 @@ class FeatureSelector:
 
         self.X = pd.DataFrame(X_ridotto, columns=cols_mantenute)
         return self.X
+    def get_dataset(self):
+        df = self.X.copy()
+        df[self.target] = self.y.values
+        return df

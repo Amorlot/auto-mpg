@@ -1,4 +1,4 @@
-from auto_mpg import DataLoader, DataCleaner, FeatureSelector
+from auto_mpg import DataLoader, DataCleaner, FeatureSelector, Preprocessor
 
 loader = DataLoader()
 df = loader.load()
@@ -8,7 +8,10 @@ cleaner = DataCleaner(df)
 df = cleaner.fix_missing_numerical()
 
 selector = FeatureSelector(df, target='mpg')
-X = selector.apply_variance_threshold(p=0.75)
+selector.apply_variance_threshold(p=0.75)
+df = selector.get_dataset()
 
-print(X.head())
-print(X.shape)
+preprocessor = Preprocessor(df, target='mpg')
+X_scaled = preprocessor.standardize()
+
+print(X_scaled.head())
