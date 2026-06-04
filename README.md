@@ -185,8 +185,3 @@ curl http://localhost:5000/model/coefficients
 | Lasso | 8.15 | 2.85 | 0.848 |
 
 ---
-
-## Autori
-
-- **Andrea** — DataLoader, DataCleaner, FeatureSelector, Preprocessor, Flask API
-- **Riccardo** — EDA, Split, LinReg
