@@ -10,18 +10,6 @@ class Preprocessor:
             self.y = df[target]
             self.X = df.drop(columns=[target])
 
-    def standardize(self):
-        if not hasattr(self, 'X'):
-            raise RuntimeError("Preprocessor deve essere inizializzato con un DataFrame: Preprocessor(df)")
-        print("\n--- STANDARDIZZAZIONE (Z-Score) ---")
-        X_scaled = self.scaler.fit_transform(self.X)
-        self.X = pd.DataFrame(X_scaled, columns=self.X.columns)
-        print(f"Media dopo scaling (deve essere ~0):")
-        print(self.X.mean().round(4))
-        print(f"\nStd dopo scaling (deve essere ~1):")
-        print(self.X.std().round(4))
-        return self.X
-
     def scale(self, X_train, X_test):
         # fit solo su train, transform su entrambi
         X_train_scaled = self.scaler.fit_transform(X_train)
